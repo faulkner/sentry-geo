@@ -31,14 +31,6 @@ Install the package via ``pip``::
 
     pip install sentry-geo
 
-Add ``sentry_geo`` to your ``INSTALLED_APPS``::
-
-    INSTALLED_APPS = (
-        # ...
-        'sentry',
-        'sentry_geo',
-    )
-
 You'll need to add the following lines to your ``urls.py``::
 
     import sentry_geo
