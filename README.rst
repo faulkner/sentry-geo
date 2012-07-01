@@ -39,10 +39,6 @@ Add ``sentry_geo`` to your ``INSTALLED_APPS``::
         'sentry_geo',
     )
 
-
-Configuration
--------------
-
 You'll need to add the following lines to your ``urls.py``::
 
     import sentry_geo
