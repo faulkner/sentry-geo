@@ -1,0 +1,4 @@
+recursive-include sentry_geo/templates *
+recursive-include sentry_geo/static *
+
+include README.rst LICENSE

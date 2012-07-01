@@ -1,0 +1,69 @@
+{% load i18n %}
+{% load sentry_helpers %}
+
+{% if show_map %}
+<link rel="stylesheet" href="/_sentry_geo_static/openlayers/theme/default/style.css" type="text/css">
+<style>
+  .smallmap {
+    width: 512px;
+    height: 256px;
+    border: 1px solid #ccc;
+  }
+  img { max-width: none; }
+</style>
+{% endif %}
+
+<div id="geo" class="module">
+  <div class="page-header">
+    <h2>{% trans "Geo" %}</h2>
+  </div>
+  <div class="module-content">
+    <table class="table table-bordered table-striped">
+      <colgroup>
+        <col style="width:60px;">
+      </colgroup>
+      <tbody>
+        <tr>
+          <th>{% trans "Lat:" %}</th>
+          <td>{{ lat }}</td>
+        </tr>
+        <tr>
+          <th>{% trans "Lon:" %}</th>
+          <td>{{ lon }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% if show_map %}
+    <div id='map' class='smallmap'></div>
+    {% endif %}
+  </div>
+</div>
+
+{% if show_map %}
+<script type="text/javascript" src="/_sentry_geo_static/openlayers/OpenLayers.light.js"></script>
+<script>
+  (function() {
+    // lifted from  the openlayers example code
+    var overlay = new OpenLayers.Layer.Vector('Overlay', {
+      styleMap: new OpenLayers.StyleMap({
+        externalGraphic: '/_sentry_geo_static/openlayers/img/marker.png',
+        graphicWidth: 20, graphicHeight: 24, graphicYOffset: -24,
+        title: '${tooltip}'
+      })
+    });
+
+    var loc = new OpenLayers.Geometry.Point({{ lon }}, {{ lat }})
+      .transform('EPSG:4326', 'EPSG:3857');
+
+    overlay.addFeatures([
+      new OpenLayers.Feature.Vector(loc, {tooltip: ''})
+    ]);
+
+    var map = new OpenLayers.Map({
+      div: 'map', projection: 'EPSG:3857',
+      layers: [new OpenLayers.Layer.OSM(), overlay],
+      center: loc.getBounds().getCenterLonLat(), zoom: 15
+    });
+  })();
+</script>
+{% endif %}
